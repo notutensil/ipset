@@ -1,10 +1,5 @@
 # ipset
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/nadoo/ipset?style=flat-square)](https://goreportcard.com/report/github.com/nadoo/ipset)
-[![GitHub tag](https://img.shields.io/github/v/tag/nadoo/ipset.svg?sort=semver&style=flat-square)](https://github.com/nadoo/ipset/releases)
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/nadoo/ipset)](https://pkg.go.dev/github.com/nadoo/ipset)
-[![Go Version](https://img.shields.io/github/go-mod/go-version/nadoo/ipset?style=flat-square)](https://go.dev/dl/)
-
 netlink ipset package for Go.
 
 ## Usage
@@ -16,7 +11,7 @@ package main
 import (
 	"log"
 
-	"github.com/nadoo/ipset"
+	"github.com/notutensil/ipset"
 )
 
 func main() {
@@ -31,6 +26,9 @@ func main() {
 	ipset.Create("myset")
 	ipset.Add("myset", "1.1.1.1")
 	ipset.Add("myset", "2.2.2.0/24")
+	
+	// ipv4 timeout, do not create if it exists
+	ipset.Add("myset", "3.3.3.4", ipset.OptTimeout(60), ipset.OptExcl())
 
 	// ipv6 and timeout example
 	// ipset create myset6 hash:net family inet6 timeout 60
@@ -56,6 +54,7 @@ Number of entries: 2
 Members:
 1.1.1.1
 2.2.2.0/24
+3.3.3.4
 ```
 
 `ipset list myset6`
@@ -72,7 +71,3 @@ Members:
 2022::1 timeout 9
 2022::/32 timeout 59
 ```
-
-## Links
-
-- [glider](https://github.com/nadoo/glider): a forward proxy with ipset management features powered by this package.
